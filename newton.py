@@ -14,23 +14,13 @@ def load_data(file):
             label.append(1)
         else :
             label.append(0)
-    xmat = np.mat(data)
-    ymat = np.mat(label).reshape(80,1)
+    xmat = np.mat(data)                 #x集
+    ymat = np.mat(label).reshape(80,1)  #标签集
     return xmat,ymat
-
-def H_1(train_x,train_y,theta):#海森矩阵的逆
-    train_x["x3"]=[1.0 for i in range(len(train_x))]
-    a = np.zeros((3,3))
-    for i in range(len(train_x)):
-        a = a + np.eye(3,3)*(np.array(np.exp(np.dot(theta,np.mat(train_x.iloc[i, :]).T)))[0][0]/(np.array(np.exp(np.dot(theta,np.mat(train_x.iloc[i, :]).T)))[0][0]+1)**2)* np.mat(train_x.iloc[i, :]).T*np.mat(train_x.iloc[i, :])
-    return (a / len(train_x)).I
-
-def eye(X):
-    return np.diag()
 
 def w_calc (xmat,ymat,maxIter = 7):
     W = np.zeros((3,1))
-    m = xmat.shape[0]                    #80
+    m = xmat.shape[0]                       #80
     for i in range(maxIter):
         h = 1.0/(1+np.exp(-(xmat*W)) )     #(80,1)
         grad = (1.0/m)*xmat.T*(h-ymat)     #(3,1) = (3,80) * (80,1)
@@ -46,8 +36,9 @@ print('w:',W)
 w0=W[0,0]
 w1=W[1,0]
 w2=W[2,0]
+
 plotx1 = np.arange(20,50,2)
-plotx2 = -w0/w2-w1/w2*plotx1
+plotx2 = -w0/w2-w1/w2*plotx1   #x2轴
 plt.plot(plotx1,plotx2,c='r',label='decision boundary')
 
 plt.scatter(xmat[:,1][ymat==0].A,xmat[:,2][ymat==0].A,marker='o',label='label=neg')
